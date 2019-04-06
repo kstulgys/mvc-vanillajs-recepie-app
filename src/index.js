@@ -1,9 +1,23 @@
-import "./styles.css"
+import './styles.css'
+import Search from './models/Search'
+import * as searchView from './views/searchView'
+import { elements } from './views/DOMelements'
 
-document.getElementById("app").innerHTML = `
-<h1>My name is Karolis!</h1>
-<div>
-  We use Parcel to bundle this sandbox, you can find more info about Parcel
-  <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-</div>
-`
+const state = {
+  // search: { recipes: [{}.{}]}
+}
+
+const handleRecpesSearch = async () => {
+  const query = searchView.getInput()
+
+  if (query) {
+    state.search = new Search(query)
+    await state.search.getRecipes()
+    console.log(state.search.recipes)
+  }
+}
+
+elements.searchForm.addEventListener('submit', e => {
+  e.preventDefault()
+  handleRecpesSearch()
+})
