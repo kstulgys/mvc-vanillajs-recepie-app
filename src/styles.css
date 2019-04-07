@@ -611,3 +611,29 @@ section {
 .link:visited {
   color: #968b87;
 }
+
+.loader {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.loader__img {
+  height: 70px;
+  width: 70px;
+}
+/* .loader svg {
+  height: 5.5rem;
+  width: 5.5rem;
+  fill: #f59a83;
+  transform-origin: 44% 50%;
+  animation: rotate 1.5s infinite linear;
+} */
+
+/* @keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} */
