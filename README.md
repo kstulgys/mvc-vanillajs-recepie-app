@@ -1,4 +1,4 @@
-# NMVC VanillaJS Recepie App
+# MVC Vanilla JS Recipes App
 
 ## Features!
 

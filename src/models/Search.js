@@ -12,8 +12,9 @@ export default class Search {
     }&page=1`
 
     try {
-      this.recipes = await fetch(url1).then(res => res.json())
-      console.log(this.recipes)
+      const { results = [] } = await fetch(url1).then(res => res.json())
+      this.results = results
+      console.log(this.results)
     } catch (e) {
       console.log(e)
     }

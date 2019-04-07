@@ -12,8 +12,12 @@ const handleRecpesSearch = async () => {
 
   if (query) {
     state.search = new Search(query)
+    searchView.clearInput()
+    searchView.clearResults()
+
     await state.search.getRecipes()
-    console.log(state.search.recipes)
+    console.log('state.search.results', state.search.results)
+    searchView.renderRecipeList(state.search.results)
   }
 }
 
