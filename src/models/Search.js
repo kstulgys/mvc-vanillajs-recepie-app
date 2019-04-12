@@ -13,8 +13,9 @@ export default class Search {
     }&app_id=${edamam_ID}&app_key=${edamam_KEY}&from=0&to=30&calories=500-1000&health=alcohol-free`
 
     try {
-      const { hits } = await fetch(url).then(res => res.json())
+      const { hits = [] } = await fetch(url).then(res => res.json())
       this.results = hits
+      console.log(this.results)
     } catch (e) {
       console.log(e)
       alert('Something went wrong :(')

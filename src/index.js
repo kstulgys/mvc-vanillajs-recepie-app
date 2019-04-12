@@ -2,6 +2,8 @@ import Search from './models/Search'
 import Recipe from './models/Recipe'
 
 import * as searchView from './views/searchView'
+import * as recipeView from './views/recipeView'
+
 import { elements, renderLoader, clearLoader } from './views/DOMelements'
 
 const state = {
@@ -45,12 +47,18 @@ elements.resultsPages.addEventListener('click', e => {
  */
 
 const handleRecipeSearch = async () => {
-  const id = window.location.hash.replace('#', '')
+  console.log('here')
 
+  const id = window.location.hash.replace('#', '')
   if (id) {
+    recipeView.clearRecipe()
+    renderLoader(elements.recipe)
+
     state.recipe = new Recipe(id)
     await state.recipe.getRecipe()
+    recipeView.renderRecipe(state.recipe)
     console.log('state.recipe', state.recipe)
+    clearLoader()
 
     // searchView.clearInput()
     // searchView.clearResults()
@@ -60,7 +68,5 @@ const handleRecipeSearch = async () => {
     // clearLoader()
   }
 }
-
-;['hashchange', 'load'].forEach(e =>
-  window.addEventListener(e, handleRecipeSearch)
-)
+window.addEventListener('hashchange', handleRecipeSearch)
+window.addEventListener('load', handleRecipeSearch)

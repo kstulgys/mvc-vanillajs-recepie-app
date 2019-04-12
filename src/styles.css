@@ -149,7 +149,7 @@ body {
   background: none;
   cursor: pointer;
 }
-.btn-tiny svg {
+.btn-tiny i {
   height: 100%;
   width: 100%;
   fill: #f59a83;
@@ -158,11 +158,11 @@ body {
 .btn-tiny:focus {
   outline: none;
 }
-.btn-tiny:hover svg {
+.btn-tiny:hover i {
   fill: #f48982;
   transform: translateY(-1px);
 }
-.btn-tiny:active svg {
+.btn-tiny:active i {
   fill: #f48982;
   transform: translateY(0);
 }
@@ -387,6 +387,7 @@ section {
   display: block;
   height: 100%;
   object-fit: cover;
+  /* transform: scale(2); */
 }
 .recipe__title {
   position: absolute;
@@ -463,10 +464,11 @@ section {
 .recipe__love:focus {
   outline: none;
 }
-.recipe__love svg {
+.recipe__love i {
   height: 2.75rem;
   width: 2.75rem;
   fill: #fff;
+  color: #fff;
 }
 .recipe__ingredients {
   padding: 4rem 5rem;
@@ -489,15 +491,15 @@ section {
   display: flex;
 }
 .recipe__icon {
-  height: 1.8rem;
-  width: 1.8rem;
-  fill: #f59a83;
-  border: 1px solid #f59a83;
-  border-radius: 50%;
-  padding: 2px;
-  margin-right: 1rem;
+  /* height: 1.8rem;
+  width: 1.8rem; */
+  /* fill: #f59a83;
+  border: 1px solid #f59a83; */
+  /* border-radius: 50%; */
+  /* padding: 2px; */
+  margin-right: 1.4rem;
   flex: 0 0 auto;
-  margin-top: 0.1rem;
+  /* margin-top: 0.1rem; */
 }
 .recipe__count {
   margin-right: 0.5rem;

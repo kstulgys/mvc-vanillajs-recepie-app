@@ -14,13 +14,13 @@ export default class Recipe {
 
     try {
       const [recipe = {}] = await fetch(url).then(res => res.json())
+
       this.label = recipe.label
       this.image = recipe.image
       this.ingredientLines = recipe.ingredientLines
       this.ingredients = recipe.ingredients
       this.url = recipe.url
       this.servings = recipe.yield
-
       this.cookingTime = this.getCookingTime(this.ingredients.length)
     } catch (e) {
       console.log(e)

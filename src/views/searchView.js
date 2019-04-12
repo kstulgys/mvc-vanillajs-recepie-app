@@ -25,7 +25,7 @@ const limitRecipeTitle = title => {
 }
 
 const getDescription = (calories, digest, ppl) => {
-  console.log(ppl)
+  // console.log(ppl)
   const cal = `${Math.round(calories / ppl)} Cal`
 
   const res = digest.map(({ label, total }, i) => {
