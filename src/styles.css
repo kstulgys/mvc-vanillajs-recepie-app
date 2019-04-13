@@ -482,13 +482,16 @@ section {
 .recipe__ingredient-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 1.5rem;
+  grid-column-gap: 5rem;
   grid-row-gap: 2.5rem;
   list-style: none;
   margin-bottom: 3rem;
 }
 .recipe__item {
+  text-align: left;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .recipe__icon {
   /* height: 1.8rem;
@@ -502,6 +505,7 @@ section {
   /* margin-top: 0.1rem; */
 }
 .recipe__count {
+  margin-left: 1rem;
   margin-right: 0.5rem;
   flex: 0 0 auto;
 }

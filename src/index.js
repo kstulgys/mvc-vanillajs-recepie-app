@@ -21,10 +21,20 @@ const handleRecipesSearch = async () => {
     searchView.clearInput()
     searchView.clearResults()
     renderLoader(elements.resultsLoader)
-    await state.search.getRecipes()
-    // console.log('state.search.results', state.search.results)
-    searchView.renderRecipeList(state.search.results)
-    clearLoader()
+    try {
+      await state.search.getRecipes()
+      // console.log('state.search.results', state.search.results)
+      searchView.renderRecipeList(state.search.results)
+      clearLoader()
+    } catch (e) {
+      clearLoader()
+      console.error(
+        `${query} from Search Controller  has Failed`,
+        e.name,
+        e.message
+      )
+      // alert('Hold on, you are clicking around too often! Take it easy :)')
+    }
   }
 }
 
@@ -47,26 +57,33 @@ elements.resultsPages.addEventListener('click', e => {
  */
 
 const handleRecipeSearch = async () => {
-  console.log('here')
-
   const id = window.location.hash.replace('#', '')
   if (id) {
     recipeView.clearRecipe()
     renderLoader(elements.recipe)
-
+    if (state.recipe) searchView.highlightSelected(id)
     state.recipe = new Recipe(id)
-    await state.recipe.getRecipe()
-    recipeView.renderRecipe(state.recipe)
-    console.log('state.recipe', state.recipe)
-    clearLoader()
-
-    // searchView.clearInput()
-    // searchView.clearResults()
-    // renderLoader(elements.resultsLoader)
-    // console.log('state.search.results', state.search.results)
-    // searchView.renderRecipeList(state.search.results)
-    // clearLoader()
+    try {
+      await state.recipe.getRecipe()
+      clearLoader()
+      recipeView.renderRecipe(state.recipe)
+    } catch (e) {
+      clearLoader()
+      console.log(e.message)
+    }
   }
 }
 window.addEventListener('hashchange', handleRecipeSearch)
 window.addEventListener('load', handleRecipeSearch)
+
+elements.recipe.addEventListener('click', e => {
+  if (e.target.matches('.btn-decrement, .btn-decrement *')) {
+    if (state.recipe.servings > 1) {
+      state.recipe.updateServings('dec')
+      searchView.updateIngredients(state.recipe)
+    }
+  } else if (e.target.matches('.btn-increment, .btn-increment *')) {
+    state.recipe.updateServings('inc')
+    searchView.updateIngredients(state.recipe)
+  }
+})

@@ -84,19 +84,31 @@ const renderButtons = (page, resNum, resPerPage) => {
 export const renderRecipeList = (recipes, page = 1, resPerPage = 10) => {
   const start = (page - 1) * resPerPage
   const end = page * resPerPage
-  recipes.slice(start, end).forEach(renderRecipe)
-  renderButtons(page, recipes.length, resPerPage)
+
+  if (recipes.length > 0) {
+    recipes.slice(start, end).forEach(renderRecipe)
+    renderButtons(page, recipes.length, resPerPage)
+  }
 }
 
-// <!-- <button class="btn-inline results__btn--prev">
-// <svg class="search__icon">
-//   <use href="assets/img/icons.svg#icon-triangle-left"></use>
-// </svg>
-// <span>Page 1</span>
-// </button>
-// <button class="btn-inline results__btn--next">
-// <span>Page 3</span>
-// <svg class="search__icon">
-//   <use href="assets/img/icons.svg#icon-triangle-right"></use>
-// </svg>
-// </button> -->
+export const highlightSelected = id => {
+  const allLinks = Array.from(document.querySelectorAll('.results__link'))
+  allLinks.forEach(link => {
+    link.classList.remove('results__link--active')
+  })
+
+  document
+    .querySelector(`a[href*='#${id}']`)
+    .classList.add('results__link--active')
+}
+
+export const updateIngredients = recipe => {
+  // Update Servings
+  document.querySelector('.recipe__info-data--people').textContent =
+    recipe.servings
+
+  const ingWeights = Array.from(document.querySelectorAll('.recipe__count'))
+  ingWeights.forEach((el, i) => {
+    el.textContent = `(${recipe.ingredients[i].weight} g)`
+  })
+}

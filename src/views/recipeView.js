@@ -11,8 +11,9 @@ const createIngredient = ({ weight, text }) => {
         <i class="far fa-check-circle fa-lg"></i>
     </div>
     <div class="recipe__ingredient">
-    ${text} (${Math.round(weight)}g)
+    ${text}
     </div>
+    <div class="recipe__count">(${Math.round(weight)} g)</div>
     </li>
     `
 }
@@ -30,6 +31,11 @@ export const renderRecipe = ({
   id,
   image
 }) => {
+  if (!label) {
+    elements.recipe.innerHTML = ''
+    return
+  }
+
   const recipeHTML = `
     <figure class="recipe__fig">
     <img src=${image} class='recipe__img' />
@@ -52,10 +58,10 @@ export const renderRecipe = ({
       <span class="recipe__info-data recipe__info-data--people">${servings}</span>
       <span class="recipe__info-text">servings</span>
       <div class="recipe__info-buttons">
-        <button class="btn-tiny">
+        <button class="btn-tiny btn-decrement">
         <i class="fas fa-minus-circle fa-lg"></i>
         </button>
-        <button class="btn-tiny">
+        <button class="btn-tiny btn-increment">
         <i class="fas fa-plus-circle fa-lg"></i>
         </button>
       </div>
@@ -68,7 +74,7 @@ export const renderRecipe = ({
   </div>
   <div class="recipe__ingredients">
     <ul class="recipe__ingredient-list">
-    ${ingredients.map(el => createIngredient(el)).join('')}
+    ${ingredients && ingredients.map(el => createIngredient(el)).join('')}
     </ul>
     <button class="btn-small recipe__btn">
       <div class="search__icon">
