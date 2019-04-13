@@ -506,7 +506,6 @@ section {
 }
 .recipe__count {
   margin-left: 1rem;
-  margin-right: 0.5rem;
   flex: 0 0 auto;
 }
 .recipe__directions {
