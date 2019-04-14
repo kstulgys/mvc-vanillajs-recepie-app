@@ -1,4 +1,4 @@
-const dotenv = require('dotenv')
+import dotenv from 'dotenv'
 dotenv.config()
 import Search from './models/Search'
 import Recipe from './models/Recipe'
