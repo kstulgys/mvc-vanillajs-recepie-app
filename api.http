@@ -1,0 +1,16 @@
+# unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=burger")
+# .header("X-RapidAPI-Host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
+# .header("X-RapidAPI-Key", "QQkdujuOz2msheucXUvGg4ZuEHopp1Qc4aXjsnoB8K7yVXCQUV")
+# .end(function (result) {
+#   console.log(result.status, result.headers, result.body);
+# });
+
+GET https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=pizza
+X-RapidAPI-Host: spoonacular-recipe-food-nutrition-v1.p.rapidapi.com
+X-RapidAPI-Key: QQkdujuOz2msheucXUvGg4ZuEHopp1Qc4aXjsnoB8K7yVXCQUV
+
+###
+
+GET https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/479101/information
+X-RapidAPI-Host: spoonacular-recipe-food-nutrition-v1.p.rapidapi.com
+X-RapidAPI-Key: QQkdujuOz2msheucXUvGg4ZuEHopp1Qc4aXjsnoB8K7yVXCQUV

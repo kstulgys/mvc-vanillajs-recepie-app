@@ -37,10 +37,8 @@ const getDescription = (calories, digest, ppl) => {
   return [...res, cal].join(' ')
 }
 
-const renderRecipe = ({
-  recipe: { label, image, uri, calories, digest, yield: ppl }
-}) => {
-  const id = uri.split('_')[1]
+const renderRecipe = ({ image, id, title }) => {
+  // console.log(image, id, title)
   const listItem = `
   <li>
     <a class="results__link" href="#${id}">
@@ -48,15 +46,15 @@ const renderRecipe = ({
         <img src=${image} />
       </figure>
       <div class="results__data">
-        <h4 class="results__name">${limitRecipeTitle(label)}</h4>
-        <p class="results__author">${getDescription(calories, digest, ppl)}</p>
+        <h4 class="results__name">${limitRecipeTitle(title)}</h4>
+        <p class="results__author"></p>
       </div>
     </a>
   </li>
 `
   elements.searchResList.insertAdjacentHTML('beforeend', listItem)
 }
-
+//${getDescription(calories, digest, ppl)}
 const createButton = (page, type) => `
 <button class="btn-inline results__btn--${type}" data-goto=${
   type === 'prev' ? page - 1 : page + 1
@@ -109,6 +107,8 @@ export const updateIngredients = recipe => {
 
   const ingWeights = Array.from(document.querySelectorAll('.recipe__count'))
   ingWeights.forEach((el, i) => {
-    el.textContent = `(${recipe.ingredients[i].weight} g)`
+    el.textContent = `(${recipe.ingredients[i].amount} ${
+      recipe.ingredients[i].unit
+    })`
   })
 }

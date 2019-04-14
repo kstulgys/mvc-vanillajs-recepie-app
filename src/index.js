@@ -1,19 +1,33 @@
+const dotenv = require('dotenv')
+dotenv.config()
 import Search from './models/Search'
 import Recipe from './models/Recipe'
+import ShoppingList from './models/ShoppingList'
+
+// import recipesController from './controllers/recipesController'
+// import recipeController from './controllers/recipeController'
+// import listController from './controllers/listController'
 
 import * as searchView from './views/searchView'
 import * as recipeView from './views/recipeView'
 
 import { elements, renderLoader, clearLoader } from './views/DOMelements'
 
-const state = {
-  // search: { recipes: [{}.{}]}
-}
+/**
+ * state = {
+ *  recipes:[{},{}],
+ *  recipe: {},
+ *  shoppingList: [{},{}]
+ * }
+ */
+
+const state = {}
 
 /**
- * SEARCH CONTROLLER
+ * SEARCH/Recipes CONTROLLER
  */
-const handleRecipesSearch = async () => {
+
+const recipesController = async () => {
   const query = searchView.getInput()
 
   if (query) {
@@ -29,20 +43,20 @@ const handleRecipesSearch = async () => {
     } catch (e) {
       clearLoader()
       console.error(
-        `${query} from Search Controller  has Failed`,
+        `${query} from Search Controller has Failed`,
         e.name,
         e.message
       )
-      // alert('Hold on, you are clicking around too often! Take it easy :)')
     }
   }
 }
 
 elements.searchForm.addEventListener('submit', e => {
   e.preventDefault()
-  handleRecipesSearch()
+  recipesController()
 })
 
+// Handle Recipes pagination clicks
 elements.resultsPages.addEventListener('click', e => {
   const btn = e.target.closest('.btn-inline')
   if (btn) {
@@ -56,7 +70,7 @@ elements.resultsPages.addEventListener('click', e => {
  * RECIPE CONTROLLER
  */
 
-const handleRecipeSearch = async () => {
+const recipeController = async () => {
   const id = window.location.hash.replace('#', '')
   if (id) {
     recipeView.clearRecipe()
@@ -66,6 +80,8 @@ const handleRecipeSearch = async () => {
     try {
       await state.recipe.getRecipe()
       clearLoader()
+
+      console.log(state.recipe)
       recipeView.renderRecipe(state.recipe)
     } catch (e) {
       clearLoader()
@@ -73,9 +89,25 @@ const handleRecipeSearch = async () => {
     }
   }
 }
-window.addEventListener('hashchange', handleRecipeSearch)
-window.addEventListener('load', handleRecipeSearch)
+window.addEventListener('hashchange', recipeController)
+window.addEventListener('load', recipeController)
 
+/**
+ * List CONTROLLER
+ */
+
+const listController = () => {
+  if (!state.list) {
+    state.list = new ShoppingList()
+  }
+
+  state.recipe.ingredients.forEach(({ amount, unit, originalName }) => {
+    state.list.addItem({ amount, unit, originalName })
+  })
+  console.log(state.list.items)
+}
+
+// Handle Recipe buttons clicks
 elements.recipe.addEventListener('click', e => {
   if (e.target.matches('.btn-decrement, .btn-decrement *')) {
     if (state.recipe.servings > 1) {
@@ -84,6 +116,10 @@ elements.recipe.addEventListener('click', e => {
     }
   } else if (e.target.matches('.btn-increment, .btn-increment *')) {
     state.recipe.updateServings('inc')
+    console.log('state.recipe.ingredients', state.recipe.ingredients)
     searchView.updateIngredients(state.recipe)
+  } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+    console.log('got in to recipe__btn')
+    listController()
   }
 })

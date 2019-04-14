@@ -4,16 +4,16 @@ export const clearRecipe = () => {
   elements.recipe.innerHTML = ''
 }
 
-const createIngredient = ({ weight, text }) => {
+const createIngredient = ({ id, amount, name, unit }) => {
   return `
     <li class="recipe__item">
     <div class="recipe__icon">
         <i class="far fa-check-circle fa-lg"></i>
     </div>
     <div class="recipe__ingredient">
-    ${text}
+    ${name}
     </div>
-    <div class="recipe__count">(${Math.round(weight)} g)</div>
+    <div class="recipe__count">(${amount} ${unit})</div>
     </li>
     `
 }
@@ -24,23 +24,17 @@ const createIngredient = ({ weight, text }) => {
 
 export const renderRecipe = ({
   ingredients,
-  cookingTime,
+  readyInMinutes,
   servings,
-  url,
-  label,
+  title,
   id,
   image
 }) => {
-  if (!label) {
-    elements.recipe.innerHTML = ''
-    return
-  }
-
   const recipeHTML = `
     <figure class="recipe__fig">
     <img src=${image} class='recipe__img' />
     <h1 class="recipe__title">
-      <span>${label}</span>
+      <span>${title}</span>
     </h1>
   </figure>
   <div class="recipe__details">
@@ -48,7 +42,7 @@ export const renderRecipe = ({
     <div class="recipe__info-icon">
     <i class="far fa-clock fa-lg"></i>
     </div>
-      <span class="recipe__info-data recipe__info-data--minutes">${cookingTime}</span>
+      <span class="recipe__info-data recipe__info-data--minutes">${readyInMinutes}</span>
       <span class="recipe__info-text"> minutes</span>
     </div>
     <div class="recipe__info">
@@ -74,9 +68,9 @@ export const renderRecipe = ({
   </div>
   <div class="recipe__ingredients">
     <ul class="recipe__ingredient-list">
-    ${ingredients && ingredients.map(el => createIngredient(el)).join('')}
+    ${ingredients.map(el => createIngredient(el)).join('')}
     </ul>
-    <button class="btn-small recipe__btn">
+    <button class="btn-small recipe__btn recipe__btn--add">
       <div class="search__icon">
       <i class="fas fa-cart-arrow-down fa-lg"></i>
       </div>
@@ -88,7 +82,7 @@ export const renderRecipe = ({
 
     <a
       class="btn-small recipe__btn"
-      href=${url}
+      href=${image}
       target="_blank"
     >
       <span>Get directions</span>
