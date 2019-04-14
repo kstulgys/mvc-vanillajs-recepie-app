@@ -4,7 +4,7 @@ export default class Search {
     this.proxy = 'https://cors-anywhere.herokuapp.com/'
     this.url = `${
       this.proxy
-    }https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&offset=0&type=main+course&query=${
+    }https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=30&offset=0&query=${
       this.query
     }`
     this.headers = {

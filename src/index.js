@@ -17,7 +17,7 @@ import { elements, renderLoader, clearLoader } from './views/DOMelements'
  * state = {
  *  recipes:[{},{}],
  *  recipe: {},
- *  shoppingList: [{},{}]
+ *  list: [{},{}]
  * }
  */
 
@@ -37,12 +37,11 @@ const recipesController = async () => {
     renderLoader(elements.resultsLoader)
     try {
       await state.search.getRecipes()
-      // console.log('state.search.results', state.search.results)
       searchView.renderRecipeList(state.search.results)
       clearLoader()
     } catch (e) {
       clearLoader()
-      console.error(
+      console.log(
         `${query} from Search Controller has Failed`,
         e.name,
         e.message
@@ -80,8 +79,7 @@ const recipeController = async () => {
     try {
       await state.recipe.getRecipe()
       clearLoader()
-
-      console.log(state.recipe)
+      console.log('state.recipe :', state.recipe)
       recipeView.renderRecipe(state.recipe)
     } catch (e) {
       clearLoader()
@@ -104,7 +102,6 @@ const listController = () => {
   state.recipe.ingredients.forEach(({ amount, unit, originalName }) => {
     state.list.addItem({ amount, unit, originalName })
   })
-  console.log(state.list.items)
 }
 
 // Handle Recipe buttons clicks
@@ -116,10 +113,8 @@ elements.recipe.addEventListener('click', e => {
     }
   } else if (e.target.matches('.btn-increment, .btn-increment *')) {
     state.recipe.updateServings('inc')
-    console.log('state.recipe.ingredients', state.recipe.ingredients)
     searchView.updateIngredients(state.recipe)
   } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-    console.log('got in to recipe__btn')
     listController()
   }
 })

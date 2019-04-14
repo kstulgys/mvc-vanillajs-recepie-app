@@ -7,13 +7,13 @@ export const clearRecipe = () => {
 const createIngredient = ({ id, amount, name, unit }) => {
   return `
     <li class="recipe__item">
-    <div class="recipe__icon">
-        <i class="far fa-check-circle fa-lg"></i>
-    </div>
-    <div class="recipe__ingredient">
-    ${name}
-    </div>
-    <div class="recipe__count">(${amount} ${unit})</div>
+      <div class="recipe__icon">
+          <i class="far fa-check-circle fa-lg"></i>
+      </div>
+      <div class="recipe__ingredient">
+      ${name}
+      </div>
+      <div class="recipe__count">(${amount} ${unit})</div>
     </li>
     `
 }
