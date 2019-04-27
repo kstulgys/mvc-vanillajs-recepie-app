@@ -1,13 +1,15 @@
 export default class Recipe {
   constructor(id) {
     this.id = id
-    this.proxy = 'https://cors-anywhere.herokuapp.com/'
+    this.proxy = `https://cors-anywhere.herokuapp.com/`
     this.url = `${
       this.proxy
     }https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
       this.id
     }/information`
-    this.nutritionUrl = `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
+    this.nutritionUrl = `${
+      this.proxy
+    }https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${
       this.id
     }/nutritionWidget.json`
     this.headers = {
@@ -41,16 +43,17 @@ export default class Recipe {
         recipe.extendedIngredients,
         recipe.servings
       )
+      this.servings = 1
     } catch (e) {
-      console.log('recipe class error', e.message)
+      console.log(e.message)
     }
   }
 
-  _formatIngredients(list, servings) {
+  _formatIngredients(list) {
     return list.map(ing => {
       return {
         id: ing.id,
-        amount: Math.round(ing.amount),
+        amount: Number((ing.amount / this.servings).toFixed(2)),
         name: ing.originalName,
         unit: ing.unit
       }
@@ -60,7 +63,9 @@ export default class Recipe {
   updateServings(type) {
     const newServings = type === 'dec' ? this.servings - 1 : this.servings + 1
     this.ingredients = this.ingredients.map(ing => {
-      const amount = Math.round((ing.amount * newServings) / this.servings)
+      const amount = Number(
+        ((ing.amount * newServings) / this.servings).toFixed(2)
+      )
       return { ...ing, amount }
     })
 

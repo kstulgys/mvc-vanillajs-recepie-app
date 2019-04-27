@@ -1,5 +1,4 @@
-let num = 3.14
+const id = '1556279783366'
 
-const inn = parseInt(num.toFixed(1))
-
-inn
+const partsed = parseInt(id)
+partsed

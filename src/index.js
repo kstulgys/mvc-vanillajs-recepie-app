@@ -3,28 +3,27 @@ dotenv.config()
 import Search from './models/Search'
 import Recipe from './models/Recipe'
 import ShoppingList from './models/ShoppingList'
-
-// import recipesController from './controllers/recipesController'
-// import recipeController from './controllers/recipeController'
-// import listController from './controllers/listController'
+import Likes from './models/Likes'
 
 import * as searchView from './views/searchView'
 import * as recipeView from './views/recipeView'
+import * as shoppingListView from './views/shoppingListView'
+import * as likesView from './views/likesView'
 
 import { elements, renderLoader, clearLoader } from './views/DOMelements'
 
-/**
- * state = {
- *  recipes:[{},{}],
- *  recipe: {},
- *  list: [{},{}]
- * }
+/** GLOBAL APP STATE
+ * - Search Object
+ * - Current recipe Object
+ * - Shopping list Object
+ * - Liked recipes Object
  */
 
 const state = {}
 
 /**
  * SEARCH/Recipes CONTROLLER
+ *
  */
 
 const recipesController = async () => {
@@ -41,11 +40,7 @@ const recipesController = async () => {
       clearLoader()
     } catch (e) {
       clearLoader()
-      console.log(
-        `${query} from Search Controller has Failed`,
-        e.name,
-        e.message
-      )
+      console.log(e.message)
     }
   }
 }
@@ -67,10 +62,11 @@ elements.resultsPages.addEventListener('click', e => {
 
 /**
  * RECIPE CONTROLLER
+ *
  */
 
 const recipeController = async () => {
-  const id = window.location.hash.replace('#', '')
+  let id = window.location.hash.replace('#', '')
   if (id) {
     recipeView.clearRecipe()
     renderLoader(elements.recipe)
@@ -79,8 +75,8 @@ const recipeController = async () => {
     try {
       await state.recipe.getRecipe()
       clearLoader()
-      console.log('state.recipe :', state.recipe)
-      recipeView.renderRecipe(state.recipe)
+      id = parseInt(id, 10)
+      recipeView.renderRecipe(state.recipe, state.likes.isLiked(id))
     } catch (e) {
       clearLoader()
       console.log(e.message)
@@ -91,18 +87,79 @@ window.addEventListener('hashchange', recipeController)
 window.addEventListener('load', recipeController)
 
 /**
- * List CONTROLLER
+ * SHOPPING LIST CONTROLLER
+ *
  */
 
-const listController = () => {
-  if (!state.list) {
-    state.list = new ShoppingList()
+const shoppingListController = () => {
+  if (!state.shoppingList) {
+    state.shoppingList = new ShoppingList()
   }
 
-  state.recipe.ingredients.forEach(({ amount, unit, originalName }) => {
-    state.list.addItem({ amount, unit, originalName })
+  state.recipe.ingredients.forEach(({ amount, unit, name }) => {
+    const item = state.shoppingList.addItem({ amount, unit, name })
+    shoppingListView.renderListItem(item)
   })
 }
+
+/**
+ * LIKES CONTROLLER
+ *
+ */
+
+const likesController = () => {
+  // if (!state.likes) {
+  //   state.likes = new Likes()
+  // }
+  const isLiked = state.likes.isLiked(state.recipe.id)
+  const { id, title, image } = state.recipe
+  //if recipe is NOT liked yed
+  if (!isLiked) {
+    //add to liked
+    state.likes.addLike({ id, title, image })
+    //toggle like button
+    likesView.renderLikeBtn(true)
+    //update the likes UI list
+    likesView.renderLike({ id, title, image })
+  }
+  //if recipe is liked
+  if (isLiked) {
+    //remove from liked
+    state.likes.removeLike(id)
+    //toggle like button
+    likesView.renderLikeBtn(false)
+    //update the likes UI list
+    likesView.deleteLike(id)
+  }
+}
+
+window.addEventListener('load', () => {
+  state.likes = new Likes()
+  state.likes.readData()
+
+  state.likes.liked.forEach(el => {
+    likesView.renderLike(el)
+  })
+})
+
+// Handle delete and update shopping list items
+elements.shoppingList.addEventListener('click', e => {
+  let id = e.target.closest('.shopping__item').dataset.itemid
+  id = parseInt(id, 10)
+  //Handle delete item
+  if (e.target.matches('.shopping__delete,.shopping__delete *')) {
+    // Delete from state
+    state.shoppingList.removeItem(id)
+    //Delete from UI
+    shoppingListView.removeItemFromUI(id)
+  }
+  if (e.target.matches('.shopping__count--value')) {
+    // Convert value to numbers
+    const value = parseFloat(e.target.value, 10)
+    //Update item amount
+    state.shoppingList.updateAmount(id, value)
+  }
+})
 
 // Handle Recipe buttons clicks
 elements.recipe.addEventListener('click', e => {
@@ -115,6 +172,8 @@ elements.recipe.addEventListener('click', e => {
     state.recipe.updateServings('inc')
     searchView.updateIngredients(state.recipe)
   } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-    listController()
+    shoppingListController()
+  } else if (e.target.matches('.recipe__love, .recipe__love *')) {
+    likesController()
   }
 })

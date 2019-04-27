@@ -24,21 +24,7 @@ const limitRecipeTitle = title => {
   return title
 }
 
-const getDescription = (calories, digest, ppl) => {
-  // console.log(ppl)
-  const cal = `${Math.round(calories / ppl)} Cal`
-
-  const res = digest.map(({ label, total }, i) => {
-    if (label === 'Fat' || label === 'Carbs' || label === 'Protein') {
-      return `${label[0]} ${Math.round(total / ppl)}g /`
-    }
-  })
-
-  return [...res, cal].join(' ')
-}
-
 const renderRecipe = ({ image, id, title }) => {
-  // console.log(image, id, title)
   const listItem = `
   <li>
     <a class="results__link" href="#${id}">
@@ -54,7 +40,6 @@ const renderRecipe = ({ image, id, title }) => {
 `
   elements.searchResList.insertAdjacentHTML('beforeend', listItem)
 }
-//${getDescription(calories, digest, ppl)}
 const createButton = (page, type) => `
 <button class="btn-inline results__btn--${type}" data-goto=${
   type === 'prev' ? page - 1 : page + 1
@@ -63,7 +48,6 @@ const createButton = (page, type) => `
 
 const renderButtons = (page, resNum, resPerPage) => {
   const pages = Math.ceil(resNum / resPerPage)
-
   let button
   if (page === 1 && pages > 1) {
     button = createButton(page, 'next')
@@ -96,7 +80,7 @@ export const highlightSelected = id => {
   })
 
   document
-    .querySelector(`a[href*='#${id}']`)
+    .querySelector(`.results__link[href*='#${id}']`)
     .classList.add('results__link--active')
 }
 

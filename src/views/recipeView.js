@@ -17,19 +17,14 @@ const createIngredient = ({ id, amount, name, unit }) => {
     </li>
     `
 }
-{
-  /* <span class="recipe__unit">g</span>
-  /* <div class="recipe__count">${Math.round(weight)}</div> */
-}
 
-export const renderRecipe = ({
-  ingredients,
-  readyInMinutes,
-  servings,
-  title,
-  id,
-  image
-}) => {
+export const renderRecipe = (
+  { ingredients, readyInMinutes, servings, title, id, image },
+  isLiked
+) => {
+  const icon = isLiked
+    ? '<i class="far fa-heart fa-2x"></i>'
+    : ` <i class="far fa-heart"></i>`
   const recipeHTML = `
     <figure class="recipe__fig">
     <img src=${image} class='recipe__img' />
@@ -62,7 +57,7 @@ export const renderRecipe = ({
     </div>
     <button class="recipe__love">
       <div class="header__likes">
-      <i class="far fa-heart fa-2x"></i>
+      ${icon}
       </div>
     </button>
   </div>
@@ -93,12 +88,4 @@ export const renderRecipe = ({
   </div>
   `
   elements.recipe.insertAdjacentHTML('beforeend', recipeHTML)
-}
-
-{
-  /* <p class="recipe__directions-text">
-This recipe was carefully designed and tested by
-<span class="recipe__by">The Pioneer Woman</span>. Please check out
-directions at their website.
-</p> */
 }
