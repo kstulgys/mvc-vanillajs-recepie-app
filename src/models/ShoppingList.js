@@ -3,12 +3,22 @@ export default class ShoppingList {
     this.items = []
   }
 
+  getId() {
+    return Math.round(performance.now())
+  }
+
   addItem(item) {
     const itemWithId = {
       ...item,
-      id: Math.floor(Math.random() * 9999999999999999)
+      id: this.getId()
     }
-    this.items.push(itemWithId)
+
+    const findItem = this.items.findIndex(el => el.name == item.name) > -1
+    if (findItem) {
+      this.items.find(el => el.name === item.name).amount += item.amount
+    } else if (!findItem) {
+      this.items.push(itemWithId)
+    }
     return itemWithId
   }
 

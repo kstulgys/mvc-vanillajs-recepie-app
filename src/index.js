@@ -95,11 +95,10 @@ const shoppingListController = () => {
   if (!state.shoppingList) {
     state.shoppingList = new ShoppingList()
   }
-
   state.recipe.ingredients.forEach(({ amount, unit, name }) => {
-    const item = state.shoppingList.addItem({ amount, unit, name })
-    shoppingListView.renderListItem(item)
+    state.shoppingList.addItem({ amount, unit, name })
   })
+  shoppingListView.renderListItems(state.shoppingList.items)
 }
 
 /**

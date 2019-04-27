@@ -75,13 +75,14 @@ export const renderRecipeList = (recipes, page = 1, resPerPage = 10) => {
 
 export const highlightSelected = id => {
   const allLinks = Array.from(document.querySelectorAll('.results__link'))
-  allLinks.forEach(link => {
-    link.classList.remove('results__link--active')
-  })
-
-  document
-    .querySelector(`.results__link[href*='#${id}']`)
-    .classList.add('results__link--active')
+  if (allLinks.length > 0) {
+    allLinks.forEach(link => {
+      link.classList.remove('results__link--active')
+    })
+    document
+      .querySelector(`.results__link[href*='#${id}']`)
+      .classList.add('results__link--active')
+  }
 }
 
 export const updateIngredients = recipe => {
